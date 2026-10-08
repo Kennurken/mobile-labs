@@ -1,5 +1,11 @@
 # mobile-labs — Flutter-лабораторные (курс «Мобильные приложения», Android Studio)
 
+[![Flutter labs CI](https://github.com/Kennurken/mobile-labs/actions/workflows/flutter.yml/badge.svg)](https://github.com/Kennurken/mobile-labs/actions/workflows/flutter.yml)
+![Windows](https://img.shields.io/badge/Windows-tested%20in%20CI-0078D6?logo=windows&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-tested%20in%20CI-FCC624?logo=linux&logoColor=black)
+![macOS](https://img.shields.io/badge/macOS-tested%20in%20CI%20%2B%20emulator-000000?logo=apple&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-3.47-02569B?logo=flutter&logoColor=white)
+
 15 лабораторных работ по методичке УМКД «Мобильді қондырғылар үшін қосымшаны құру». Все работы на **Flutter/Dart**, целевая платформа — **Android**. Каждая лаба — отдельный Flutter-проект со своим `README.md` (на казахском), тестами и скриншотами в [`screenshots/`](screenshots).
 
 | № | Проект | Тема | Что нужно кроме Flutter |
@@ -28,12 +34,13 @@
 
 | Среда | Статус |
 |-------|--------|
-| **macOS 27 (Apple Silicon, arm64), 16 ГБ RAM**, Flutter 3.47.3 / Dart 3.13.3, Android Studio 2026.1, эмулятор Android 16 (API 36) | ✅ лабы **4–15** собраны, запущены на эмуляторе и проверены (`flutter test` и `flutter analyze` зелёные, скриншоты в `screenshots/`). Лабы 1–3 сделаны раньше и в этой проверке заново не гонялись |
+| **macOS 27 (Apple Silicon, arm64), 16 ГБ RAM**, Flutter 3.47.3 / Dart 3.13.3, Android Studio 2026.1, эмулятор Android 16 (API 36) | ✅ все **15** лаб собраны и запущены на эмуляторе (скриншоты лаб 4–15 в `screenshots/`), `flutter test` и `flutter analyze` зелёные |
 | Реальное Android-устройство | ❌ не проверялось (только эмулятор) |
-| **Windows 10/11, Linux** | ⚠️ **не проверялось.** Инструкции ниже составлены по официальной документации Flutter/Android; в коде Android-части нет ничего, что привязано к macOS, но реальный запуск на этих системах я не делал |
+| **CI: Windows, Linux, macOS** (GitHub Actions, `windows-latest` / `ubuntu-latest` / `macos-latest`, Flutter stable) | ✅ при каждом пуше: `flutter analyze` + `flutter test` **всех 15 лаб**, сборка debug APK лабы 15 (все плагины: Firebase, геолокация, камера и т. д.) и release APK + AAB лабы 12. Workflow: [`.github/workflows/flutter.yml`](.github/workflows/flutter.yml) |
+| Запуск на эмуляторе под Windows / Linux | ⚠️ не проверялся (CI собирает и тестирует, но эмулятор там не поднимается) |
 | iOS | ❌ не поддерживается в этом репозитории (в проектах только папка `android/`; в `lab13_counter_app` есть заготовка `ios/`, но она не запускалась — на машине нет Xcode) |
 
-Если что-то не заработало на Windows/Linux — это ожидаемый риск, смотри раздел [«Частые проблемы»](#6-частые-проблемы).
+CI уже нашёл и исправил одну Windows-проблему: сборка падала, когда проект и кэш Pub лежат на разных дисках (см. [«Частые проблемы»](#6-частые-проблемы)). Если что-то не заработало у тебя — смотри тот же раздел.
 
 ---
 
