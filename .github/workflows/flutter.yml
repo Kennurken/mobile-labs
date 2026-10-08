@@ -1,0 +1,78 @@
+name: Flutter labs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  analyze-and-test:
+    name: analyze + test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: flutter --version
+        run: flutter --version
+
+      - name: Analyze and test every lab
+        shell: bash
+        run: |
+          status=0
+          {
+            echo "### analyze + test on ${{ matrix.os }}"
+            echo "| lab | analyze | test |"
+            echo "|-----|---------|------|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for d in lab*/; do
+            d=${d%/}
+            echo "::group::$d"
+            (cd "$d" && flutter pub get >/dev/null) || { echo "| $d | pub get failed | - |" >> "$GITHUB_STEP_SUMMARY"; status=1; echo "::endgroup::"; continue; }
+            if (cd "$d" && flutter analyze); then a="✅"; else a="❌"; status=1; fi
+            if (cd "$d" && flutter test); then t="✅"; else t="❌"; status=1; fi
+            echo "::endgroup::"
+            echo "| $d | $a | $t |" >> "$GITHUB_STEP_SUMMARY"
+          done
+          exit $status
+
+  build-android:
+    name: build apk (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Accept Android licenses
+        shell: bash
+        run: yes | flutter doctor --android-licenses || true
+
+      - name: Build lab15 (all plugins) — debug APK
+        shell: bash
+        run: cd lab15_final_project && flutter pub get && flutter build apk --debug
+
+      - name: Build lab12 — release APK and AAB
+        shell: bash
+        run: cd lab12_apk_build && flutter pub get && flutter build apk --release && flutter build appbundle --release
