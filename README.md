@@ -200,6 +200,7 @@ Get-ChildItem -Directory lab* | ForEach-Object { Push-Location $_; Write-Host "=
 | Эмулятор не стартует, «HAXM / hypervisor / KVM» | Включи виртуализацию в BIOS и Windows Hypervisor Platform (Windows) или KVM (Linux), перезагрузись. |
 | Эмулятор без интернета (DNS не резолвит, картинки/API не грузятся) | Запусти эмулятор с явным DNS: `emulator -avd lab_pixel -dns-server 8.8.8.8,1.1.1.1`. |
 | `Building with plugins requires symlink support` (Windows) | Включи **Режим разработчика** Windows. |
+| `Daemon compilation failed … this and base files have different roots` (Windows) | Проект и кэш Pub (`%LOCALAPPDATA%\Pub\Cache`) лежат на разных дисках — ошибка инкрементальной компиляции Kotlin. В проектах уже стоит `kotlin.incremental=false` (`android/gradle.properties`); для своих проектов добавь эту строку или перенеси кэш на тот же диск: `setx PUB_CACHE D:\pub-cache`. Подтверждено в CI. |
 | Сборка падает на длинных путях (Windows) | Клонируй репозиторий в короткий путь вроде `C:\dev\mobile-labs`; при необходимости включи длинные пути: `git config --system core.longpaths true`. |
 | Предупреждения про «Built-in Kotlin» в логе Gradle | Это предупреждения плагинов, на сборку не влияют. |
 | `flutter run` в лабе 14: «Failed to load FirebaseOptions from resource» | Нет `google-services.json` в `android/app/` (или имя пакета в нём не совпадает) — раздел 5. |
