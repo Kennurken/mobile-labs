@@ -1,0 +1,5 @@
+package kz.labs.lab9_permissions
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()

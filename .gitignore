@@ -1,0 +1,14 @@
+# Release binaries (large) — rebuild with `flutter build apk --release` / `appbundle`
+release/
+*.apk
+*.aab
+
+# Firebase client config for the personal mobile-labs project — do not publish
+google-services.json
+
+# Build output / caches
+build/
+.dart_tool/
+.gradle/
+local.properties
+.DS_Store
